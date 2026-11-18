@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mella-core"
+version = "0.1.0"
+description = "Independent local records, conversation continuity, and recovery for Mella"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MPL-2.0"}
+authors = [{name = "Fieldlight Institute"}]
+dependencies = []
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: System :: Archiving :: Backup",
+]
+
+[project.urls]
+Homepage = "https://github.com/fieldlight-institute/mella-core"
+Repository = "https://github.com/fieldlight-institute/mella-core"
+Issues = "https://github.com/fieldlight-institute/mella-core/issues"
+
+[project.scripts]
+mella-core = "mella_core.cli:main"
+mella-core-mcp = "mella_core.mcp:main"
+
+[tool.setuptools.packages.find]
+include = ["mella_core*"]
+
+[tool.setuptools]
+license-files = ["LICENSE", "NOTICE"]

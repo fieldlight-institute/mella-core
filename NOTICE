@@ -1,0 +1,23 @@
+Mella Core
+Created by Anni McHenry / Fieldlight Institute, 2026.
+
+This release extracts the independently usable record, conversation, preservation,
+and reference-connection components developed for Mella. Development included
+AI-assisted implementation and review. The code's recorded lineage is Mella's
+local application and its earlier synthetic container-preservation proof.
+
+Original software, examples, and documentation in this repository are distributed
+under Mozilla Public License 2.0 unless an individual file states otherwise.
+The complete license is in LICENSE. The license text itself is reproduced from
+https://www.mozilla.org/media/MPL/2.0/index.txt without modification.
+
+The Mella and Fieldlight names and visual identities are reserved for their
+respective products and organizations. The software license does not grant
+trademark rights or imply endorsement of derived products.
+
+The runtime uses Python's standard library. No third-party model weights,
+provider software, fonts, logos, or private source corpus are bundled. Python
+and any separately installed host or provider retain their own licenses.
+
+Example records are fictional. User-imported material remains governed by its
+own rights and is not relicensed merely by being stored or exported with Core.

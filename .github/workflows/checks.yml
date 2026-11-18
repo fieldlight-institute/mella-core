@@ -1,0 +1,40 @@
+name: Core checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.9'
+          - os: ubuntu-latest
+            python: '3.13'
+          - os: macos-latest
+            python: '3.11'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Behavioral tests
+        run: python -m unittest discover -s tests -v
+      - name: Independent recovery example
+        run: python -m examples.roundtrip --output ./demo-output
+      - name: Build and install package
+        run: |
+          python -m pip wheel . --no-deps --wheel-dir dist
+          python -m pip install --force-reinstall --no-deps dist/*.whl
+      - name: Installed commands outside the checkout
+        run: |
+          cd "$(mktemp -d)"
+          mella-core --help
+          mella-core-mcp --help

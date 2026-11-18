@@ -1,0 +1,28 @@
+{
+  "title": "Community garden opening — fictional example",
+  "provider": "Example assistant",
+  "current_node": "revised-plan",
+  "create_time": 1700000000,
+  "mapping": {
+    "root": {"parent": null, "children": ["first-plan"], "message": null},
+    "first-plan": {
+      "parent": "root",
+      "children": ["unused-branch", "correction"],
+      "message": {"id": "first-plan", "author": {"role": "assistant", "name": "Planner"}, "content": {"content_type": "text", "parts": ["Open the garden on Saturday. Budget: 300 units."]}}
+    },
+    "unused-branch": {
+      "parent": "first-plan", "children": [],
+      "message": {"id": "unused-branch", "author": {"role": "assistant"}, "content": {"content_type": "text", "parts": ["An alternative: postpone until next month."]}}
+    },
+    "correction": {
+      "parent": "first-plan", "children": ["revised-plan"],
+      "message": {"id": "correction", "author": {"role": "user"}, "content": {"content_type": "text", "parts": ["Use Sunday. Keep the 300-unit budget. The Saturday date is superseded."]}, "metadata": {"example_unknown_field": {"preserve": true}}}
+    },
+    "revised-plan": {
+      "parent": "correction", "children": [],
+      "message": {"id": "revised-plan", "author": {"role": "assistant", "name": "Planner"}, "content": {"content_type": "text", "parts": ["Current plan: Sunday, 300 units. Confirm the volunteer roster next."]}}
+    }
+  },
+  "example": true,
+  "example_metadata": {"purpose": "Synthetic record for independent preservation and recovery checks"}
+}
