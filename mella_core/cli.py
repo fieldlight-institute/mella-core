@@ -142,6 +142,11 @@ def parser():
     for name in ("export", "reader"):
         out = sub.add_parser(name, help="Write complete JSON" if name == "export" else "Write a standalone offline HTML reader")
         out.add_argument("--output", type=Path, required=True)
+    explain = sub.add_parser("explain", help="Read source-validated decision history without a model")
+    explain.add_argument("--work-id", default="default")
+    explain.add_argument("--conversation-id")
+    explain.add_argument("--format", choices=("json", "html"), default="json")
+    explain.add_argument("--output", type=Path, help="New offline file; otherwise JSON goes to stdout")
     verify = sub.add_parser("verify", help="Fully validate a snapshot in a temporary independent directory")
     verify.add_argument("archive", type=Path)
     restore = sub.add_parser("restore", help="Restore a snapshot to a fresh directory; never overwrite")
@@ -177,6 +182,18 @@ def main(argv=None):
             raise StoreError("A container already exists here; init will not replace it.")
         if args.command != "init" and not exists:
             raise StoreError("Container not found. Create it with init, or select an existing directory.")
+        if args.command == "explain":
+            from .decision_reader import read_container, render_html
+            if args.format == "html" and args.output is None:
+                raise StoreError("Use --output PATH for an HTML reading copy.")
+            document = read_container(directory / "container.sqlite3", args.work_id, args.conversation_id)
+            if args.output:
+                content = render_html(document) if args.format == "html" else _json(document)
+                result = {"path": str(_write_new(args.output, content)), "head": document["guidance"]["head"]}
+            else:
+                result = document
+            print(_json(result), end="")
+            return 0
         store = Store(directory)
         if args.command == "init":
             result = store.state()["container"]
@@ -221,7 +238,7 @@ def main(argv=None):
             result = {"path": str(_write_new(args.output, content)), "record_versions": len(exported["records"])}
         print(_json(result), end="")
         return 0
-    except (StoreError, preservation.Rejected, OSError, ValueError, KeyError, sqlite3.Error) as exc:
+    except (StoreError, preservation.Rejected, OSError, ValueError, KeyError, TypeError, sqlite3.Error) as exc:
         print("Mella Core: " + str(exc), file=sys.stderr)
         return 1
 

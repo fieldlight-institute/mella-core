@@ -6,7 +6,7 @@ Mella Core is the open-source record and recovery foundation of Mella, a user-si
 
 Created by Anni McHenry at [Fieldlight Institute](https://fieldlight.com/).
 
-This first release is an early developer preview for macOS and Linux with Python 3.9 or newer. It is extracted from Mella's working local application. The full Mella app and resident intelligence are developed separately; Core does not run a model or promise autonomous system-wide control.
+Version 0.2 is an early developer preview for macOS and Linux with Python 3.9 or newer. It adds a portable decision record, deterministic replay, source validation, and independent explanation reader. It retains the existing container and snapshot formats. The full Mella app and resident intelligence are developed separately; Core does not run a model or promise autonomous system-wide control.
 
 ## Try a complete example
 
@@ -43,7 +43,7 @@ python3 -m mella_core --data-dir ./recovered list
 
 Use `read RECORD_ID --version 1` to inspect an older version, or `read RECORD_ID --format original` to recover the exact original imported file. The JSON export contains every stored revision and event, with exact payload bytes alongside readable values. Snapshots are the supported restore input. HTML and JSON exports are private reading/interchange copies, not uploads.
 
-An optional local installation provides `mella-core` and `mella-core-mcp` commands:
+An optional local installation provides `mella-core`, `mella-core-mcp`, and `mella-core-decisions` commands:
 
 ```sh
 python3 -m venv .venv
@@ -59,10 +59,27 @@ python3 -m venv .venv
 | Versioned records | Revisions append. A context pinned to version 1 continues to reference version 1 after version 2 is added. |
 | Conversation journal | Original event objects and received partial work are retained; a consumer can reconstruct the reading view after reopening. |
 | Independent reading | CLI, complete JSON export, and an escaped, script-free offline HTML reader. |
+| Decision continuity | Exact human words kept separate from attributed interpretations; deterministic scope, correction, conflict, source-revision review, and historical explanation. |
 | Recovery | Consistent SQLite snapshots, lossless compression, manifests, integrity checks, and restoration to a fresh destination. |
 | Reference connection | Local MCP tools and resources for an explicitly selected container; optional read-only mode. |
 
 All deliberately included records are available to an admitted local client. Selected context is a loading preference. The current adapter trusts local processes and self-reported participant labels; it is not an authenticated multi-user permission service.
+
+## Understand the decisions in a container
+
+For an existing container with a `mella.decisions/1` journal:
+
+```sh
+python3 -m mella_core --data-dir ./data explain --work-id default
+python3 -m mella_core --data-dir ./data explain --work-id default --format html --output ./decisions.html
+python3 -m mella_core.decision_reader ./data/container.sqlite3 --work-id default --json ./decisions.json
+```
+
+Add `--conversation-id ID` to inspect bounded exceptions in that conversation. The JSON/HTML reading copies retain the complete decision journal and its original sources, including inactive readings. Scope selects current guidance; it does **not** redact the exported archive. Files are private, unencrypted, and never overwritten.
+
+The reader verifies recorded quotes against the exact source version, distinguishes input route from claimed speaker, and explains why a reading remains current, provisional, conflicted, corrected, superseded, revoked, or pending review. One-turn tasks remain recorded requests in history, excluded from standing guidance; retaining a task does not mark it completed. An ordinary imported note does not become governing guidance. An empty journal means no extracted decisions were recorded, not that the underlying conversations contain no decisions.
+
+The reducer is executable, model-free Python: `mella_core.decision_core.reduce_events`. Source validation is in `mella_core.decision_validation`; the read-only SQLite adapter and offline renderer are in `mella_core.decision_reader`. These tools recover recorded interpretation and history; they do not infer fresh decisions, prove an interpretation correct, authenticate a human, or grant an agent permission. See [the decision format](docs/DECISIONS.md).
 
 ## Connect an agent
 
@@ -97,7 +114,7 @@ Core's record format, preservation, reader, and reference connections are open u
 python3 -m unittest discover -s tests -v
 ```
 
-Tests cover preservation failures, source fidelity, revisions and stale-write rejection, event replay, concurrent turn admission, MCP protocol behavior, CLI recovery, and escaped offline reading. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). The source is intentionally free of private working records and provider credentials.
+Tests cover preservation failures, source fidelity, revisions and stale-write rejection, event replay, concurrent turn admission, MCP protocol behavior, CLI recovery, and escaped offline reading. Decision tests create synthetic application-shaped journals and independently restore/replay them; no private application import or live model is required. See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). The source is intentionally free of private working records and provider credentials.
 
 For product, collaboration, or investment interest: [anni@fieldlight.com](mailto:anni@fieldlight.com).
 

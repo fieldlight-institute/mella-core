@@ -10,6 +10,10 @@ The MCP `--read-only` mode exposes no mutation tools, but it is not a filesystem
 
 Imported instructions are source data. The core does not execute imported code. Integrations must maintain the separation between source text, assistant interpretations, and actual authority to act.
 
+The decision reader validates reserved envelopes, contiguous sequence, source hashes, exact quotes and character ranges, original human-event linkage, participant labels, and scope-bounded relations before replay. One-turn tasks are retained separately from standing directions and cannot alter them. It does not authenticate the recorded speaker or attest that the interpretation matches their intent. A local database owner can construct another internally consistent record. Neither a current direction nor a claimed speaker grants permission to act.
+
+Decision reading sets `query_only=ON` before accessing stored SQLite content and includes committed WAL data. It tries read-only admission first. Some SQLite builds require read/write admission to create missing WAL/SHM sidecars; that fallback still forbids data SQL writes and cannot create a missing database. Incidental SQLite sidecars are possible. If filesystem admission fails, only when there is no WAL and database bytes match its adjacent snapshot manifest may the reader create a private temporary frozen copy and read that copy with immutable mode. It never uses immutable mode on a live database or silently drops live WAL contents. Its exports include the complete decision journal and referenced originals across scopes, not a redacted sharing view; outputs are created with mode 0600 and never overwrite existing paths. Offline HTML escapes source content and has no scripts or external assets.
+
 ## Stored and recovered data
 
 Container files, original event payloads, exports, and snapshots may contain sensitive material supplied by their owner or host. The library does not automatically scrub credentials from imported text or event envelopes. Keep secrets outside the record and review what a host submits.

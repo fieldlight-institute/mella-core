@@ -11,6 +11,7 @@ The open source in this repository covers:
 - Pinned context descriptors, explicit record reads, and source attribution.
 - Snapshot creation, integrity checks, and restoration into a new destination.
 - An independent reader and command interface.
+- The portable decision format, exact source validators, deterministic scope/relation replay, and model-free explanation reader.
 - A local MCP reference adapter for compatible hosts.
 - Synthetic examples and behavior tests.
 
@@ -23,6 +24,8 @@ The commercial Mella application develops the working experience around this fou
 The commercial application and resident implementation are not distributed in this repository. No model, model weights, provider client, credential, or hosted service is bundled here. The Mella name and mark identify the official product; the software license does not grant trademark rights. See [LICENSE](../LICENSE).
 
 The user's continuing work remains part of the record. Source material, retained conversations, corrections, decisions, assistant notes, and any stored task or resident state must remain recoverable independently of the proprietary logic that produced or used them. An implementation can keep its methods proprietary while exposing the resulting user state in a documented, portable representation. The current snapshot includes all records actually stored in its container; it cannot preserve state left in another application's files.
+
+Decision interpretation and the host's transactional extraction/writing route remain separate from this package. Core provides the resulting record format and executable replay/validation/reading code. The reducer does not decide what a person meant from keywords; it applies recorded explicit relations to source-linked readings and retains the rationale and history. Consumers can inspect or implement their own interpreter without purchasing the commercial workspace.
 
 ## Authority boundary
 

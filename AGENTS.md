@@ -5,6 +5,7 @@ This is the public open-source record, recovery, and reference-connection core o
 - Keep this repository independently usable. Do not import the private Mella application, depend on a developer's checkout, or add personal filesystem paths.
 - Preserve original UTF-8 imports, unfamiliar metadata, branches, attribution, immutable revisions, and received work from interrupted conversations. Reading views are derived.
 - Keep schema identifiers stable. Format changes require explicit compatibility and migration decisions.
+- Preserve `mella.decisions/1`, exact original anchors, attributed readings, explicit scope and relation history. The pure reducer replays recorded meaning; do not add keyword extraction or authority grants. Keep source validators and offline replay usable without a private writer, provider, or model.
 - An attachment reference is not an included file. Snapshot receipts must distinguish recovered records from unresolved external dependencies.
 - Restore only into fresh destinations. Never overwrite a live container as part of verification or a migration test.
 - All deliberately included records belong to the shared interior. Context selection is loading priority. Current-access inputs and MCP client labels are not an authenticated grant or identity service.

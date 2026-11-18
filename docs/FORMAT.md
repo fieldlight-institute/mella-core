@@ -10,8 +10,11 @@ Mella Core retains the existing versioned SQLite format so that records and snap
 | Database `meta.app_schema` | `mella.local/1` | Library and conversation payload conventions |
 | Snapshot `archive_schema` | `mella.snapshot-proof/1` | Manifest and archive layout |
 | Reading export `export_schema` | `mella.core-export/1` | Complete JSON view with exact payload bytes |
+| Reserved decision event `schema` | `mella.decisions/1` | Source-linked interpretations, scope, changes, delivery and extraction history |
 
 The historical `proof` labels are compatibility identifiers, not descriptions of the package release stage. Do not rename them without an explicit migration. Unsupported schemas are rejected; there is no implicit migration that discards unfamiliar material.
+
+Package 0.2 adds the decision reader and reducer without changing the existing tables or snapshot schema. Decision events are immutable version-1 records in the existing journal. Older containers with no decision events remain readable; they produce an empty decision projection. Generic import does not upgrade arbitrary text into a reserved event. See [DECISIONS.md](DECISIONS.md) for the complete portable structure and replay contract.
 
 ## Container layout
 

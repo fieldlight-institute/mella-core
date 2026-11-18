@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mella-core"
-version = "0.1.0"
+version = "0.2.0"
 description = "Independent local records, conversation continuity, and recovery for Mella"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -28,6 +28,7 @@ Issues = "https://github.com/fieldlight-institute/mella-core/issues"
 [project.scripts]
 mella-core = "mella_core.cli:main"
 mella-core-mcp = "mella_core.mcp:main"
+mella-core-decisions = "mella_core.decision_reader:main"
 
 [tool.setuptools.packages.find]
 include = ["mella_core*"]
